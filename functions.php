@@ -6,25 +6,8 @@ register_nav_menus(
 	)
 );
 
-class My_Walker_Nav_Menu extends Walker_Nav_Menu {
-
-	// add classes to ul sub-menus
-	function start_lvl( &$output, $depth = 0, $args = NULL ) {
-		// depth dependent classes
-		$indent = ( $depth > 0  ? str_repeat( "\t", $depth ) : '' ); // code indent
-		$display_depth = ( $depth + 1); // because it counts the first submenu as 0
-		$classes = array(
-			'sub-menu',
-			( $display_depth % 2  ? 'menu-odd' : 'menu-even' ),
-			( $display_depth >=2 ? 'sub-sub-menu' : '' ),
-			'menu-depth-' . $display_depth
-		);
-		$class_names = implode( ' ', $classes );
-
-		// build html
-		$output .= "\n" . $indent . '<div class="' . $class_names . '">' . "\n";
-	}
-
+class My_Walker_Nav_Menu extends Walker_Nav_Menu {	
+	
 	// add main/sub classes to li's and links
 	function start_el( &$output, $data_object, $depth = 0, $args = null, $current_object_id = 0 ) {
 		global $wp_query;
@@ -63,17 +46,12 @@ class My_Walker_Nav_Menu extends Walker_Nav_Menu {
 			$args->link_before,
 			apply_filters( 'the_title', $item->title, $item->ID ),
 			$args->link_after,
-			( $depth > 0 ? '</div>' : ' ' )
+			$args->after,
 		);
 
 		// build html
 		$output .= apply_filters( 'walker_nav_menu_start_el', $item_output, $item, $depth, $args );
 	}
-	
-	function end_el( &$output, $data_object, $depth = 0, $args = array() ) {
-		$output .= "\n";
-	}
-
 }
 
 
